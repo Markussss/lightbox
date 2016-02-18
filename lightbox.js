@@ -1,36 +1,29 @@
 function lightbox(el, w, h, close) {
-  document.body.appendChild(createElement('div',
-    {
-      id: 'backdrop',
-      click: function (e) {
-        if (e.target == document.getElementById('backdrop')) {
-          document.getElementById('backdrop').parentNode.removeChild(document.getElementById('backdrop'));
-          close();
-        }
-      }
-    },
-    createElement('div',
-      {
-        id: 'lightbox',
-        style: {
-          width: w + 'px',
-          height: h + 'px',
-          marginTop: '-' + h/2 + 'px',
-          marginLeft: '-' + w/2 + 'px'
-        }
-      }, [
-        createElement('div', {
-          text: "✕",
-          class: 'close-icon',
-          click : function () {
-            document.getElementById('backdrop').parentNode.removeChild(document.getElementById('backdrop'));
-            close();
-          }
-        }),
-        el
-      ]
-    )
-  ));
+  var bd = document.createElement('div'),
+      lb = document.createElement('div'),
+      ci = document.createElement('div'),
+      cix = document.createTextNode('✕');
+  bd.id = 'backdrop';
+  bd.addEventListener('click', function (e) {
+    if (e.target == document.getElementById('backdrop')) {
+      document.getElementById('backdrop').parentNode.removeChild(document.getElementById('backdrop'));
+      close();
+    }
+  });
+  lb.id = 'lightbox';
+  lb.style.height = h + 'px';
+  lb.style.width = w + 'px';
+  lb.style.marginTop = '-' + h/2 + 'px';
+  lb.style.marginLeft = '-' + w/2 + 'px';
+  ci.className = 'close-icon';
+  ci.addEventListener('click', function () {
+    document.getElementById('backdrop').parentNode.removeChild(document.getElementById('backdrop'));
+    close();
+  });
+  lb.appendChild(el);
+  lb.appendChild(ci);
+  bd.appendChild(lb);
+  document.body.appendChild(bd);
 }
 
 function createElement(tagName, attr, child) {
